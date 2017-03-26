@@ -4,29 +4,11 @@
 
 U(1) Lattice Gauge Theory Simulator | James Graham
 
-Site struct
+Declare the various operators we need to calculate things about the lattice
 
 /////////////////////////////////////////////////////////////////////////////
 */
 
-#pragma once
+#include "Site.h"
 
-class Site{
-
-public:
-  double xlink;
-  double ylink;
-  double tlink;
-
-  Site* xnext;
-  Site* xprev;
-
-  Site* ynext;
-  Site* yprev;
-
-  Site* tnext;
-  Site* tprev;
-
-  Site();
-
-};
+double avg_p(Site** lattice);

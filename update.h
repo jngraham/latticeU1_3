@@ -4,29 +4,11 @@
 
 U(1) Lattice Gauge Theory Simulator | James Graham
 
-Site struct
+Here we declare update()
 
 /////////////////////////////////////////////////////////////////////////////
 */
 
-#pragma once
+#include "Site.h"
 
-class Site{
-
-public:
-  double xlink;
-  double ylink;
-  double tlink;
-
-  Site* xnext;
-  Site* xprev;
-
-  Site* ynext;
-  Site* yprev;
-
-  Site* tnext;
-  Site* tprev;
-
-  Site();
-
-};
+int update(Site** lattice, double* gauss);

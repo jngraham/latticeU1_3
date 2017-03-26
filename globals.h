@@ -11,9 +11,9 @@ Global parameters
 
 // Parameters for the size of the array
 
-const int Lx = 3;
-const int Ly = 3;
-const int Lt = 3;
+const int Lx = 10;
+const int Ly = 10;
+const int Lt = 10;
 
 // Parameters for the number of iterations, etc.
 
@@ -25,7 +25,9 @@ const int N_samples = 10;
 
 const int N_configs = N_configs_per_sample * N_samples;
 
-const int N_links = Lx * Ly * Lt * 3;
+const size_t N_sites = Lx*Ly*Lt;
+const int N_links = 3*Lx*Ly*Lt;
+const int N_plaquettes = 3*Lx*Ly*Lt;
 
 // Parameters for selecting a new link
 
