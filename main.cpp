@@ -77,9 +77,9 @@ int main(){
   }
   std::cout << std::endl;
 
-  // for (int i = 0; i < N_sites; i++){
-  //   delete lattice[i];
-  // }
+  for (int i = 0; i < N_sites; i++){
+    delete lattice[i];
+  }
 
   return 0;
 }
