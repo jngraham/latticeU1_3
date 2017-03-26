@@ -62,13 +62,15 @@ int main(){
   double flux_re_data [Lt*N_samples] = {0};
   double flux_im_data [Lt*N_samples] = {0};
 
-  // declare the zero-time operators
+  // declare the plaquette average
 
   double this_avg_plaquette;
   double jpc_plus_zero;
   double jpc_minus_zero;
-  double flux_zero [2];
-  double flux_pair [2];
+  double flux_re_zero;
+  double flux_im_zero;
+  double flux_re;
+  double flux_im;
 
   // initialize, set up links among our sites
 
@@ -116,29 +118,43 @@ int main(){
 
   // do the simulation
 
+  int op_sample;
+
   for (int i = 0; i < N_samples; i++){
 
-    double p_sum = 0;
-    double jpc_plus_sum = 0;
-    double jpc_minus_sum = 0;
-    double flux_re_sum = 0;
-    double flux_im_sum = 0;
+    op_sample = Lt*i;
 
     for (int j = 0; j < N_configs_per_sample; j++){
       update(lattice, V);
 
       this_avg_plaquette = avg_p(lattice);
+      jpc_plus_zero = m_plus(lattice, 0, this_avg_plaquette);
+      jpc_minus_zero = m_minus(lattice, 0);
 
-      p_sum += this_avg_plaquette;
+      flux(lattice, 0, &flux_re_zero, &flux_im_zero);
+
+      avg_plaquette_data[i] += this_avg_plaquette / N_configs_per_sample;
+
+      for (int t = 0; t < Lt; t++){
+
+        jpc_plus_data[op_sample + t] += jpc_plus_zero*m_plus(lattice, t, this_avg_plaquette) / N_configs_per_sample;
+        jpc_minus_data[op_sample + t] += jpc_minus_zero*m_minus(lattice, t) / N_configs_per_sample;
+
+        // we need two numbers out of this, which is not ideal
+        flux(lattice, t, &flux_re, &flux_im);
+
+        flux_re_data[op_sample + t] += (flux_re_zero*flux_re + flux_im_zero*flux_im) / N_configs_per_sample;
+        flux_im_data[op_sample + t] += (flux_re_zero*flux_im - flux_im_zero*flux_re) / N_configs_per_sample;
+
+        if ((j+1)%10000 == 0){
+          std::cout << (j+1)/1000 << " configs complete for sample " << (i+1) << "\n";
+        }
+      }
     }
 
-    avg_plaquette_data[i] = p_sum / N_configs_per_sample;
-    jpc_plus_data[i] = jpc_plus_sum / N_configs_per_sample;
-    jpc_minus_data[i] = jpc_minus_sum / N_configs_per_sample;
-    flux_re_data[i] = flux_re_sum / N_configs_per_sample;
-    flux_im_data[i] = flux_im_sum / N_configs_per_sample;
+    // avg_plaquette_data[i] = avg_plaquette_data[i] / N_configs_per_sample;
 
-    std::cout << "sample " << i << " of " << N_samples << " complete\n";
+    std::cout << "sample " << (i+1) << " of " << N_samples << " complete\n";
 
   }
   // delete pointers at the very end
