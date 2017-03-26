@@ -13,7 +13,7 @@ Global parameters
 
 const int Lx = 3;
 const int Ly = 3;
-const int Lt = 1;
+const int Lt = 3;
 
 // Parameters for the number of iterations, etc.
 
