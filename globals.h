@@ -17,7 +17,7 @@ const int Lt = 10;
 
 // Parameters for the number of iterations, etc.
 
-const double beta = 2.2;
+// const double beta = 2.2;
 
 const int N_equilibration_configs = 2000;
 const int N_configs_per_sample = 500;

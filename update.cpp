@@ -23,7 +23,7 @@ std::default_random_engine update_generator;
 std::uniform_int_distribution<int> int_distribution(0,N_V-1);
 std::uniform_real_distribution<double> real_distribution(0.0,1.0);
 
-int update(Site** array, double* gauss){
+int update(Site** array, double* gauss, double beta){
 
   double old_link;
   double new_link;

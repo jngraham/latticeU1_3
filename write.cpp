@@ -10,12 +10,14 @@ main to be very straightforward
 /////////////////////////////////////////////////////////////////////////////
 */
 
+#include <cmath>
 #include <iostream>
 #include <fstream>
+#include <string>
 
 #include "globals.h"
 
-int write(double* avg_plaquette_data, double* jpc_plus_data, double* jpc_minus_data, double* flux_re_data, double* flux_im_data){
+int write(double* avg_plaquette_data, double* jpc_plus_data, double* jpc_minus_data, double* flux_re_data, double* flux_im_data, double beta){
 
   // Output data to .csv so I can use excel or mathematica or python or whatever
 
@@ -25,12 +27,21 @@ int write(double* avg_plaquette_data, double* jpc_plus_data, double* jpc_minus_d
   std::ofstream flux_re_output;
   std::ofstream flux_im_output;
 
-  std::string params = "_" + std::to_string(Lx) + "x" + std::to_string(Ly) + "x" + std::to_string(Lt) + "_beta" + std::to_string(int(10*(beta-2)));
-  plaquette_output.open("plaquette"+params+".csv");
-  mplus_output.open("mplus"+params+".csv");
-  mminus_output.open("mminus"+params+".csv");
-  flux_re_output.open("flux_re_"+params+".csv");
-  flux_im_output.open("flux_im_"+params+".csv");
+  double fractpart, intpart;
+  fractpart = modf(beta, &intpart);
+
+  std::string b = std::to_string(beta);
+  std::string params = "_beta";
+  params += b[0];
+  params += b[1];
+  params += b[2];
+  // std::string params = "_" + std::to_string(Lx) + "_" + std::to_string(Ly) + "_" + std::to_string(Lt) + "_beta" + b[0] + b[1] + b[2];
+  std::string path = "data/" + std::to_string(Lx) + "_" + std::to_string(Ly) + "_" + std::to_string(Lt) + "/";
+  plaquette_output.open(path + "plaquette"+params+".csv");
+  mplus_output.open(path + "mplus"+params+".csv");
+  mminus_output.open(path + "mminus"+params+".csv");
+  flux_re_output.open(path + "flux_re"+params+".csv");
+  flux_im_output.open(path + "flux_im"+params+".csv");
 
   plaquette_output << "Sample #,value,\n";
 
