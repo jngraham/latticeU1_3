@@ -1,5 +1,3 @@
 #!/bin/bash
 
-g++ main.cpp Site.cpp simulate.cpp update.cpp operators.cpp write.cpp -o main
-
-screen -dm -S lgt ./main
+sed -i 's/Lx = 10/Lx = 18/g' globals.h

@@ -11,7 +11,7 @@ Global parameters
 
 // Parameters for the size of the array
 
-const int Lx = 10;
+const int Lx = 18;
 const int Ly = 10;
 const int Lt = 10;
 
