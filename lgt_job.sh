@@ -22,6 +22,6 @@ echo ',s/Lx = 28/Lx = 10/g; w' | tr \; '\012' | ed -s globals.h
 echo ',s/Ly = 28/Ly = 10/g; w' | tr \; '\012' | ed -s globals.h
 echo ',s/Lt = 40/Lt = 10/g; w' | tr \; '\012' | ed -s globals.h
 
-screen -d -m -S lgt_small ./main_small
-screen -d -m -S lgt_med ./main_med
-screen -d -m -S lgt_large ./main_large
+screen -d -m -S jng_lgt_small ./main_small
+screen -d -m -S jng_lgt_med ./main_med
+screen -d -m -S jng_lgt_large ./main_large

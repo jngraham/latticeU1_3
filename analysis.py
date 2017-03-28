@@ -9,49 +9,63 @@
 
 import sys
 
-import numpy
+import numpy as np
 import matplotlib.pyplot as plt
 
-fin = open(sys.argv[1], 'r')
+beta = [2.0, 2.2, 2.3]
+# folders = ["18_18_24"]
+folders = ["18_18_24", "22_22_36", "28_28ores _40"]
 
-Lx = int(fin.readline().split("=")[1])
-Ly = int(fin.readline().split("=")[1])
-Lt = int(fin.readline().split("=")[1])
+for i in range(len(folders)):
 
-beta = {"2.0":2.0, "2.2":2.2, "2.3":2.3}
+    prefix = "data/" + folders[i] + "/"
 
-avg_plaquette_data = []
+    avg_plaquette_data = []
+    avg_p_table = r'\begin{tabular}{c | c c} $\beta$ & $\mu$ & $\sigma$'
 
-for i in beta.keys():
-    prefix = "data/"
-    suffix = "_" + str(Lx) + "x" + str(Ly) + "x" + str(Lt) + "_beta" + i + ".csv"
+    labels = [];
 
-    plaquette = open(prefix + "plaquette" + suffix, "r")
-    # mplus = open(prefix + "mplus" + suffix, "r")
-    # mminus = open(prefix + "mminus" + suffix, "r")
-    # flux_re = open(prefix + "flux_re" + suffix, "r")
-    # flux_im = open(prefix + "flux_im" + suffix, "r")
+    for j in beta:
 
-    plaquette.readline()
+        avg_p_table += r'\\'
 
-    temp = []
+        labels.append(r'$\beta=$'+str(j))
+        suffix = "_beta" + str(j) + ".csv"
 
-    for line in plaquette.readlines():
-        data = line.split(",")
+        plaquette = open(prefix + "plaquette" + suffix, "r")
+        # mplus = open(prefix + "mplus" + suffix, "r")
+        # mminus = open(prefix + "mminus" + suffix, "r")
+        # flux_re = open(prefix + "flux_re" + suffix, "r")
+        # flux_im = open(prefix + "flux_im" + suffix, "r")
 
-        # because we care for neither what sample number it has, nor the "\n"
-        for i in xrange(1,len(data)-1):
-            temp.append(float(data[i]))
+        plaquette.readline()
 
+        temp = []
 
+        for line in plaquette.readlines():
+            data = line.split(",")
 
-    plaquette.close()
-    # mplus.close()
-    # mminus.close()
-    # flux_re.close()
-    # flux_im.close()
+            # because we care for neither what sample number it has, nor the "\n"
+            for k in xrange(1,len(data)-1):
+                temp.append(float(data[k]))
 
-    avg_plaquette_data.append(temp)
+        plaquette.close()
+        # mplus.close()
+        # mminus.close()
+        # flux_re.close()
+        # flux_im.close()
 
-plt.boxplot(avg_plaquette_data, labels=beta.keys())
-plt.show()
+        avg_plaquette_data.append(temp)
+        avg_p_table += str(j) + r'&' + str(np.mean(temp)) + r'& ' + str(np.std(temp))
+
+    avg_p_table += '\end{tabular}'
+
+    bp = plt.figure("Average Plaquette")
+    # plt.subplot(121)
+    plt.boxplot(avg_plaquette_data, labels=labels, bootstrap=None)
+    plt.ylabel(r'$\langle\cos(U_p)\rangle$')
+    #
+    # plt.subplot(122)
+    # plt.cla()
+    # plt.text(0,0,avg_p_table)
+    plt.savefig(prefix + 'avg_plaquette.pdf', bbox_inches = "tight")

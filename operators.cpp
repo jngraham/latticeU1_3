@@ -47,7 +47,7 @@ double m_plus(Site** lattice, int t, double VEV){
   size_t start = Lx*Ly*t;
   size_t end = Lx*Ly*(t+1);
 
-  Site** ptr = lattice;
+  Site** ptr = lattice + start;
 
   for (size_t i = start; i < end; i++){
     p_xy = (*ptr)->xlink + (*ptr)->xnext->ylink - (*ptr)->ynext->xlink - (*ptr)->ylink;

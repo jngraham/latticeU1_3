@@ -61,7 +61,7 @@ int update(Site** array, double* gauss, double beta){
 
     // note that if the new action is smaller than the old action, then
     // C > 1 so we accept the new link.
-    C = exp(beta * minus_new_action)/exp(beta * minus_old_action);
+    C = exp(beta * (minus_new_action - minus_old_action));
 
     z = real_distribution(update_generator);
     // z = real_distribution(generator);
@@ -87,7 +87,7 @@ int update(Site** array, double* gauss, double beta){
 
     // note that if the new action is smaller than the old action, then
     // C > 1 so we accept the new link.
-    C = exp(beta * minus_new_action)/exp(beta * minus_old_action);
+    C = exp(beta * (minus_new_action - minus_old_action));
 
     z = real_distribution(update_generator);
     // z = real_distribution(generator);
@@ -113,7 +113,7 @@ int update(Site** array, double* gauss, double beta){
 
     // note that if the new action is smaller than the old action, then
     // C > 1 so we accept the new link.
-    C = exp(beta * minus_new_action)/exp(beta * minus_old_action);
+    C = exp(beta * (minus_new_action - minus_old_action));
 
     z = real_distribution(update_generator);
     // z = real_distribution(generator);

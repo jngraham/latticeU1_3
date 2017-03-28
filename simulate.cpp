@@ -151,10 +151,6 @@ int simulate(float beta){
 
         flux_re_data[op_sample + t] += (flux_re_zero*flux_re + flux_im_zero*flux_im) / N_configs_per_sample;
         flux_im_data[op_sample + t] += (flux_re_zero*flux_im - flux_im_zero*flux_re) / N_configs_per_sample;
-
-        if ((j+1)%10000 == 0){
-          std::cout << (j+1)/1000 << " configs complete for sample " << (i+1) << "\n";
-        }
       }
     }
 
@@ -163,6 +159,7 @@ int simulate(float beta){
     std::cout << "sample " << (i+1) << " of " << N_samples << " complete\n";
 
   }
+
   // delete pointers at the very end
 
   for (int i = 0; i < N_sites; i++){
@@ -173,9 +170,9 @@ int simulate(float beta){
 
   clock_t t3 = clock();
 
-  for (int i = 0; i < N_samples; i++){
-    std::cout << avg_plaquette_data[i] << std::endl;
-  }
+  // for (int i = 0; i < N_samples; i++){
+  //   std::cout << avg_plaquette_data[i] << std::endl;
+  // }
 
   std::cout << "setup time: " << (double(t2) - double(t1)) / CLOCKS_PER_SEC << std::endl;
   std::cout << "compute time: " << (double(t3) - double(t2)) / CLOCKS_PER_SEC << std::endl;
