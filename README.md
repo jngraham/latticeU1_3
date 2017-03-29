@@ -3,7 +3,7 @@
 This is a third and best attempt to do the U(1) Lattice Gauge Theory simulation in C++ for my NPQFT problem set, using the Metropolis algorithm.
 
 My code has six files:
-* `main.cpp`, in which `main()` calls `simulate()` with an argument of <img src="https://latex.codecogs.com/svg.latex?{\(\beta\)}" alt="{\beta}">;
+* `main.cpp`, in which `main()` calls `simulate()` with an argument of <img src="https://latex.codecogs.com/svg.latex?{\textstyle{\beta}}" alt="{\textstyle{\beta}}">;
 * `simulate.cpp`, in which `simulate()` creates the lattice and generates field field configurations. It also orchestrates the collection of data and writing said data to arrays;
 * `update.cpp`, in which `update()` takes in a pointer to the zeroth element of the lattice, a pointer to our set <img src="https://latex.codecogs.com/svg.latex?{V}" alt="{V}"> and a value of <img src="https://latex.codecogs.com/svg.latex?{\beta}" alt="{\beta}">, and modifies all the links in the lattice according to the Metropolis algorithm.
 * `operators.cpp`, which contains several functions that compute <img src="https://latex.codecogs.com/svg.latex?{\langle\Phi^\dagger(t)\Phi(0)\rangle}" alt="{\langle\Phi^\dagger(t)\Phi(0)\rangle}"> for various operators, given a time coordinate;
