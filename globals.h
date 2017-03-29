@@ -33,4 +33,4 @@ const int N_plaquettes = 3*Lx*Ly*Lt;
 
 const int N_V = 400;
 const double mu = 0;
-const double sigma = 0.7;
+const double sigma = 0.75;
