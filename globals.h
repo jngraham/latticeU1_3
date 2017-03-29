@@ -31,6 +31,6 @@ const int N_plaquettes = 3*Lx*Ly*Lt;
 
 // Parameters for selecting a new link
 
-const int N_V = 200;
+const int N_V = 400;
 const double mu = 0;
-const double sigma = 1.2;
+const double sigma = 0.7;

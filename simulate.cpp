@@ -36,8 +36,8 @@ int simulate(float beta){
 
   // set up the RNG
 
-  // std::mt19937 generator(time(0));
-  std::default_random_engine generator;
+  std::mt19937 generator(clock());
+  // std::default_random_engine generator;
   std::normal_distribution<double> gaussian_distribution(mu,sigma);
 
   // declare lattice
@@ -170,9 +170,9 @@ int simulate(float beta){
 
   clock_t t3 = clock();
 
-  // for (int i = 0; i < N_samples; i++){
-  //   std::cout << avg_plaquette_data[i] << std::endl;
-  // }
+  for (int i = 0; i < N_samples; i++){
+    std::cout << avg_plaquette_data[i] << std::endl;
+  }
 
   std::cout << "setup time: " << (double(t2) - double(t1)) / CLOCKS_PER_SEC << std::endl;
   std::cout << "compute time: " << (double(t3) - double(t2)) / CLOCKS_PER_SEC << std::endl;
