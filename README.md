@@ -53,9 +53,9 @@ staple2 = - (*ptr)->xnext->yprev->ylink - (*ptr)->yprev->xlink + (*ptr)->yprev->
 where `ptr` is a pointer to `lattice[i]`, which itself is a pointer to a `Site`. Once we have calculated all the staples, we can calculate the action for the old and new links. Strictly, the integrand in our path integral is
 <img src="https://latex.codecogs.com/svg.latex?{e^{-\beta S[U]}}" alt="{e^{-beta S[U]}}">
 with action given by
-<img src="https://latex.codecogs.com/svg.latex?{S[U]=\sum_p \left(1-\operatorname{Re}\operatorname{Tr}U_p\right)=\sum_p \left(1-\cos\theta_p\right)}" alt="{S[U]=\sum_p \left(1-\operatorname{Re}\operatorname{Tr}U_p\right)=\sum_p \left(1-\cos\theta_p\right)}">
+<img src="https://latex.codecogs.com/svg.latex?{S[U]=\sum_p \left(1-\textrm{Re}\textrm{Tr}U_p\right)=\sum_p \left(1-\cos\theta_p\right)}" alt="{S[U]=\sum_p \left(1-\textrm{Re}\textrm{Tr}U_p\right)=\sum_p \left(1-\cos\theta_p\right)}">
 but the 1 in the action amounts to a constant in front of the path integral and the minus signs cancel out. Furthermore, the Metropolis algorithm relies on the ratio
-<img src="https://latex.codecogs.com/svg.latex?{C=\frac{e^{-\beta S[U']}}{e^{-\beta S[U]}}}" alt="{C=\frac{e^{-\beta S[U']}}{e^{-\beta S[U]}}}">
+<img src="https://latex.codecogs.com/svg.latex?{C= e^{-\beta S[U']}/e^{-\beta S[U]}}" alt="{C= e^{-\beta S[U']}/e^{-\beta S[U]}}">
 When we change one link, the only change in the action comes from the cosines of the plaquettes around that link. So the salient part of the action, and the part we calculate for both the old link phase and new link phase, is
 
 <img src="https://latex.codecogs.com/svg.latex?{\sum_j\cos(\theta_l+\xi_j)}" alt="{\sum_j\cos(\theta_l+\xi_j)}">
