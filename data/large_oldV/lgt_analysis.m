@@ -84,6 +84,12 @@ for i = 1:3
         
         for k = 1:N_s
             hold on;
+            plot(time,mplus_data(k,:),'b.')
+            legend('off')
+            xlim([0 T])
+        end
+        for k = 1:N_s
+            hold on;
             tsample = time((tstart-1):(T/2-tcutoff))';
             ysample = mplus_data(k,(tstart-1):(T/2-tcutoff))';
             mplus_fit = fit(tsample,ysample,'exp1');
@@ -91,7 +97,6 @@ for i = 1:3
             cinterval = confint(mplus_fit,0.95);
             temp_mplus_mass = [temp_mplus_mass; [-coeffs(2), -cinterval(2,2), -cinterval(1,2)]];
             plot(mplus_fit,tsample,ysample)
-            plot(time,mplus_data(k,:),'bx')
             legend('off')
             xlim([0 T])
         end
@@ -113,6 +118,12 @@ for i = 1:3
         subplot(1,3,j)
         for k = 1:N_s
             hold on;
+            plot(time,mminus_data(k,:),'b.')
+            legend('off')
+            xlim([0 T])
+        end
+        for k = 1:N_s
+            hold on;
             tsample = time(tstart:(T/2-tcutoff))';
             ysample = mminus_data(k,tstart:(T/2-tcutoff))';
             mminus_fit = fit(tsample,ysample,'exp1');
@@ -120,7 +131,6 @@ for i = 1:3
             cinterval = confint(mminus_fit,0.95);
             temp_mminus_mass = [temp_mminus_mass; [-coeffs(2), -cinterval(2,2), -cinterval(1,2)]];
             plot(mminus_fit,tsample,ysample)
-            plot(time,mminus_data(k,:),'bx')
             legend('off')
             xlim([0 T])
         end
@@ -142,6 +152,12 @@ for i = 1:3
         subplot(1,3,j)
         for k = 1:N_s
             hold on;
+            plot(time,flux_re_data(k,:),'b.')
+            legend('off')
+            xlim([0 T])
+        end
+        for k = 1:N_s
+            hold on;
             tsample = time(tstart:(T/2-tcutoff))';
             ysample = flux_re_data(k,tstart:(T/2-tcutoff))';
             flux_re_fit = fit(tsample,ysample,'exp1');
@@ -149,7 +165,6 @@ for i = 1:3
             cinterval = confint(flux_re_fit,0.95);
             temp_flux_re_energy = [temp_flux_re_energy; [-coeffs(2), -cinterval(2,2), -cinterval(1,2)]];
             plot(flux_re_fit,tsample,ysample)
-            plot(time,flux_re_data(k,:),'bx')
             legend('off')
             xlim([0 T])
         end
@@ -171,6 +186,12 @@ for i = 1:3
         subplot(1,3,j)
         for k = 1:N_s
             hold on;
+            plot(time,flux_im_data(k,:),'b.')
+            legend('off')
+            xlim([0 T])
+        end
+        for k = 1:N_s
+           hold on;
             tsample = time(tstart:(T/2-tcutoff))';
             ysample = flux_im_data(k,tstart:(T/2-tcutoff))';
             flux_im_fit = fit(tsample,ysample,'exp1');
@@ -178,10 +199,11 @@ for i = 1:3
             cinterval = confint(flux_im_fit,0.95);
             temp_flux_im_energy = [temp_flux_im_energy; [-coeffs(2), -cinterval(2,2), -cinterval(1,2)]];
             plot(flux_im_fit,tsample,ysample)
-            plot(time,flux_im_data(k,:),'bx')
             legend('off')
             xlim([0 T])
         end
+        
+        
         set(gca,'YTickLabelRotation',0)
         title(strcat('$$\beta=\,$$',' ',beta{1,j}),'Interpreter','latex','FontSize',16)
         xlabel('$$t$$','Interpreter','latex','FontSize',16)
