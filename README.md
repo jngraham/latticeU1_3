@@ -57,6 +57,7 @@ with action given by
 but the 1 in the action amounts to a constant in front of the path integral and the minus signs cancel out. Furthermore, the Metropolis algorithm relies on the ratio
 <img src="https://latex.codecogs.com/svg.latex?{C=\frac{e^{-\beta S[U']}}{e^{-\beta S[U]}}}" alt="{C=\frac{e^{-\beta S[U']}}{e^{-\beta S[U]}}}">
 When we change one link, the only change in the action comes from the cosines of the plaquettes around that link. So the salient part of the action, and the part we calculate for both the old link phase and new link phase, is
+
 <img src="https://latex.codecogs.com/svg.latex?{\sum_j\cos(\theta_l+\xi_j)}" alt="{\sum_j\cos(\theta_l+\xi_j)}">
 and we find
 <img src="https://latex.codecogs.com/svg.latex?{C=\exp\left(\beta\left(\sum_j\cos(\theta_l'+\xi_j)-\sum_j\cos(\theta_l+\xi_j)\right)\right)}" alt="{C=\exp\left(\beta\left(\sum_j\cos(\theta_l'+\xi_j)-\sum_j\cos(\theta_l+\xi_j)\right)\right)}}">
