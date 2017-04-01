@@ -36,12 +36,10 @@ for i = 1:3
     flux_im_energy = [];
     
     mplus = figure('Name', 'm0++', 'NumberTitle', 'off','PaperUnits','centimeters','PaperSize',[24 8],'PaperPosition',[-2,0.5,28,7]);
-
     mminus = figure('Name', 'm0--', 'NumberTitle', 'off','PaperUnits','centimeters','PaperSize',[24 8],'PaperPosition',[-2,0.5,28,7]);
-
     flux_re = figure('Name', 'Flux Tube (Real Part)', 'NumberTitle','off','PaperUnits','centimeters','PaperSize',[24 8],'PaperPosition',[-2,0.5,28,7]);
-
     flux_im = figure('Name', 'Flux Tube (Imaginary Part)', 'NumberTitle','off','PaperUnits','centimeters','PaperSize',[24 8],'PaperPosition',[-2,0.5,28,7]);
+    flux_abs = figure('Name', 'Flux Tube (Norm)', 'NumberTitle','off','PaperUnits','centimeters','PaperSize',[24 8],'PaperPosition',[-2,0.5,28,7]);
 
 %     selects which beta to take data from / will put all betas side by
 %     side
@@ -176,6 +174,30 @@ for i = 1:3
         
 %         flux_im_energy = [flux_im_energy temp_flux_im_energy];
         
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+        flux_abs_data = (flux_re_data.^2+flux_im_data.^2).^(1/2);
+        
+        flux_abs_avg = mean(flux_abs_data);
+        flux_abs_std = std(flux_abs_data);
+%         5 = sqrt(25)
+        flux_abs_err = t_crit*flux_abs_std/5;
+        
+%         flux_im_sample = flux_im_avg(tstart:tend)';
+%         flux_im_fit = fit(tsample, flux_im_sample, 'exp1');
+%         flux_im_y = flux_im_fit(t_fit_sample);
+        
+        figure(flux_abs)
+        subplot(1,3,j)
+        hold on;
+        errorbar(time(2:end),flux_abs_avg(2:end),flux_abs_err(2:end),'bo')
+%         plot(t_fit_sample,flux_im_y,'r','LineWidth',2)
+        xlim([0 T])
+        set(gca,'YTickLabelRotation',0)
+        title(strcat('$$\beta=\,$$',' ',beta{1,j}),'Interpreter','latex','FontSize',16)
+        xlabel('$$t$$','Interpreter','latex','FontSize',16)
+        ylabel('$$\textrm{Im}\left(\langle\Phi^\dagger(t)\Phi(0)\rangle\right)$$','Interpreter','latex','FontSize',16)
+
     end
    
     
@@ -189,6 +211,7 @@ for i = 1:3
     print(mminus,strcat('figures/',Folders{1,i},'/mminus_bars.pdf'),'-dpdf','-r300')
     print(flux_re,strcat('figures/',Folders{1,i},'/flux_re_bars.pdf'),'-dpdf','-r300')
     print(flux_im,strcat('figures/',Folders{1,i},'/flux_im_bars.pdf'),'-dpdf','-r300')
+    print(flux_abs,strcat('figures/',Folders{1,i},'/flux_abs_bars.pdf'),'-dpdf','-r300')
     
     close all;
 end

@@ -14,7 +14,7 @@ warning
 
 % start fitting at time = 1, 2nd entry of time vector
 tstart = 2;
-% stop fitting at T/2-tcutoff
+% stop fitting time tcutoff-1
 tcutoff = 10;
 
 % the idea for writing the summary data is to have one file for each
@@ -31,22 +31,19 @@ for i = 1:3
     mminus_mass = [];
     flux_re_energy = [];
     flux_im_energy = [];
+    flux_abs_energy = [];
     avg_plaquette = [];
     
     avg_p = figure('Name', 'Average Plaquette', 'NumberTitle', 'off','PaperUnits','centimeters','PaperSize',[12 12],'PaperPosition', [0,0,13,12]);
-    
     mplus = figure('Name', 'm0++', 'NumberTitle', 'off','PaperUnits','centimeters','PaperSize',[24 8],'PaperPosition',[-2,0.5,28,7]);
-
     mminus = figure('Name', 'm0--', 'NumberTitle', 'off','PaperUnits','centimeters','PaperSize',[24 8],'PaperPosition',[-2,0.5,28,7]);
-
     flux_re = figure('Name', 'Flux Tube (Real Part)', 'NumberTitle','off','PaperUnits','centimeters','PaperSize',[24 8],'PaperPosition',[-2,0.5,28,7]);
-
     flux_im = figure('Name', 'Flux Tube (Imaginary Part)', 'NumberTitle','off','PaperUnits','centimeters','PaperSize',[24 8],'PaperPosition',[-2,0.5,28,7]);
+    flux_abs = figure('Name', 'Flux Tube (Norm)', 'NumberTitle','off','PaperUnits','centimeters','PaperSize',[24 8],'PaperPosition',[-2,0.5,28,7]);
 
+    
 %     selects which beta to take data from / will put all betas side by
 %     side
-
-    
     for j = 1:3
         
         f_plaquette_name = strcat(Folders{1,i},'/plaquette_beta',beta{1,j},'.csv');
@@ -66,18 +63,15 @@ for i = 1:3
 %     saveas(avg_p,strcat('figures/',Folders{1,i},'/plaquette_beta',beta{1,j},'.png'))
     print(avg_p,strcat('figures/',Folders{1,i},'/plaquette.pdf'),'-dpdf','-r300')
 
-    
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
     for j = 1:3
         
         temp_mplus_mass = [];
-        
         temp_mminus_mass = [];
-        
         temp_flux_re_energy = [];
-        
         temp_flux_im_energy = [];
+        temp_flux_abs_energy = [];
         
         f_mplus_name = strcat(Folders{1,i},'/mplus_beta',num2str(beta{1,j}),'.csv');
         temp = csvread(f_mplus_name,1);
@@ -93,6 +87,8 @@ for i = 1:3
         
         figure(mplus)
         subplot(1,3,j)
+        
+        tcutoff = 5;
         
         for k = 1:N_s
             hold on;
@@ -128,6 +124,8 @@ for i = 1:3
         f_mminus_name = strcat(Folders{1,i},'/mminus_beta',num2str(beta{1,j}),'.csv');
         temp = csvread(f_mminus_name,1);
         mminus_data = temp(:,2:(end-1));
+        
+        tcutoff = 11;
         
         figure(mminus)
         subplot(1,3,j)
@@ -166,6 +164,16 @@ for i = 1:3
         temp = csvread(f_flux_re_name,1);
         flux_re_data = temp(:,2:(end-1));
         
+        if j == 1
+            tcutoff = 7;
+        else
+            if i == 1
+                tcutoff = 11;
+            else
+                tcutoff = 9;
+            end
+        end
+        
         figure(flux_re)
         subplot(1,3,j)
         for k = 1:N_s
@@ -203,6 +211,8 @@ for i = 1:3
         temp = csvread(f_flux_im_name,1);
         flux_im_data = temp(:,2:(end-1));
         
+        tcutoff = 10;
+        
         figure(flux_im)
         subplot(1,3,j)
         for k = 1:N_s
@@ -235,17 +245,63 @@ for i = 1:3
         
         flux_im_energy = [flux_im_energy temp_flux_im_energy];
         
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+        flux_abs_data = (flux_re_data.^2+flux_im_data.^2).^(1/2);
+        
+        if j == 1
+            tcutoff = 7;
+        else
+            if i == 1
+                tcutoff = 11;
+            else
+                tcutoff = 9;
+            end
+        end
+        
+        figure(flux_abs)
+        subplot(1,3,j)
+        for k = 1:N_s
+            hold on;
+            plot(time(2:end),flux_abs_data(k,2:end),'b.')
+            legend('off')
+            xlim([0 T])
+        end
+        for k = 1:N_s
+            hold on;
+            tsample = time(tstart:tcutoff)';
+            t_fit_sample = ((tstart-1):0.1:(tcutoff-1))';
+            ysample = flux_abs_data(k,tstart:tcutoff)';
+            flux_abs_fit = fit(tsample,ysample,'exp1');
+            y = flux_abs_fit(t_fit_sample);
+            
+            coeffs = coeffvalues(flux_abs_fit);
+            cinterval = confint(flux_abs_fit,0.99);
+            temp_flux_abs_energy = [temp_flux_abs_energy; [-coeffs(2), -cinterval(2,2), -cinterval(1,2)]];
+            plot(t_fit_sample,y,'r')
+            legend('off')
+            xlim([0 T])
+        end
+        
+        
+        set(gca,'YTickLabelRotation',0)
+        title(strcat('$$\beta=\,$$',' ',beta{1,j}),'Interpreter','latex','FontSize',16)
+        xlabel('$$t$$','Interpreter','latex','FontSize',16)
+        ylabel('$$\textrm{Im}\left(\langle\Phi^\dagger(t)\Phi(0)\rangle\right)$$','Interpreter','latex','FontSize',16)
+        
+        flux_abs_energy = [flux_abs_energy temp_flux_abs_energy];
     end
    
     
 %     save all figures to file, save all summaries to file (as .mat with no column names...)
     summaryname = strcat('summary/', Folders{1,i});
-    save(summaryname, 'avg_plaquette', 'mplus_mass', 'mminus_mass', 'flux_re_energy', 'flux_im_energy');
+    save(summaryname, 'avg_plaquette', 'mplus_mass', 'mminus_mass', 'flux_re_energy', 'flux_im_energy', 'flux_abs_energy');
 
     print(mplus,strcat('figures/',Folders{1,i},'/mplus.pdf'),'-dpdf','-r300')
     print(mminus,strcat('figures/',Folders{1,i},'/mminus.pdf'),'-dpdf','-r300')
     print(flux_re,strcat('figures/',Folders{1,i},'/flux_re.pdf'),'-dpdf','-r300')
     print(flux_im,strcat('figures/',Folders{1,i},'/flux_im.pdf'),'-dpdf','-r300')
+    print(flux_abs,strcat('figures/',Folders{1,i},'/flux_abs.pdf'),'-dpdf','-r300')
     
     close all;
 end
