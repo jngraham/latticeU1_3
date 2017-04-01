@@ -88,6 +88,7 @@ for i = 1:3
         figure(mplus)
         subplot(1,3,j)
         
+        tstart = 2;
         tcutoff = 5;
         
         for k = 1:N_s
@@ -249,6 +250,8 @@ for i = 1:3
 
         flux_abs_data = (flux_re_data.^2+flux_im_data.^2).^(1/2);
         
+        tstart = 2;
+        
         if j == 1
             tcutoff = 7;
         else
@@ -278,7 +281,7 @@ for i = 1:3
             coeffs = coeffvalues(flux_abs_fit);
             cinterval = confint(flux_abs_fit,0.99);
             temp_flux_abs_energy = [temp_flux_abs_energy; [-coeffs(2), -cinterval(2,2), -cinterval(1,2)]];
-            plot(t_fit_sample,y,'r')
+            plot(t_fit_sample(1:end),y(1:end),'r')
             legend('off')
             xlim([0 T])
         end
@@ -287,7 +290,7 @@ for i = 1:3
         set(gca,'YTickLabelRotation',0)
         title(strcat('$$\beta=\,$$',' ',beta{1,j}),'Interpreter','latex','FontSize',16)
         xlabel('$$t$$','Interpreter','latex','FontSize',16)
-        ylabel('$$\textrm{Im}\left(\langle\Phi^\dagger(t)\Phi(0)\rangle\right)$$','Interpreter','latex','FontSize',16)
+        ylabel('$$|\langle\Phi^\dagger(t)\Phi(0)\rangle\|$$','Interpreter','latex','FontSize',16)
         
         flux_abs_energy = [flux_abs_energy temp_flux_abs_energy];
     end
