@@ -13,6 +13,8 @@ Declare the various operators we need to calculate things about the lattice
 
 double avg_p(Site** lattice);
 
+double avg_p_zerop(Site** lattice);
+
 double m_plus(Site** lattice, int t, double VEV);
 
 double m_minus(Site** lattice, int t);

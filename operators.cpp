@@ -39,8 +39,29 @@ double avg_p(Site** lattice){
   return p_sum / N_plaquettes;
 }
 
+double avg_p_zerop(Site** lattice){
+
+  double p_sum = 0;
+
+  double p_xy = 0;
+
+  Site** ptr = lattice;
+
+  for (size_t i = 0; i < N_sites; i++){
+
+    p_xy = (*ptr)->xlink + (*ptr)->xnext->ylink - (*ptr)->ynext->xlink - (*ptr)->ylink;
+
+    p_sum += cos(p_xy);
+
+    ptr++;
+  }
+
+  return p_sum / Lt;
+}
+
 double m_plus(Site** lattice, int t, double VEV){
 
+// here the VEV is the average of a "wall" of plaquettes that lie in the xy plane
   double jpc_plus_sum = 0;
   double p_xy = 0;
 
@@ -52,11 +73,11 @@ double m_plus(Site** lattice, int t, double VEV){
   for (size_t i = start; i < end; i++){
     p_xy = (*ptr)->xlink + (*ptr)->xnext->ylink - (*ptr)->ynext->xlink - (*ptr)->ylink;
 
-    jpc_plus_sum += cos(p_xy) - VEV;
+    jpc_plus_sum += cos(p_xy);
     ptr++;
   }
 
-  return jpc_plus_sum;
+  return jpc_plus_sum - VEV;
 
 }
 

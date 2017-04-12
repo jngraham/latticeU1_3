@@ -63,9 +63,11 @@ int simulate(float beta){
   double flux_re_data [Lt*N_samples] = {0};
   double flux_im_data [Lt*N_samples] = {0};
 
-  // declare the plaquette average
+  // declare various things we need later on. the zero_momentum_avg_plaquette
+  // gives a quantity of order Lx*Ly*<U_p> so that we subtract it once at the
+  // end when we calculate our 0++ glueball mass.
 
-  double this_avg_plaquette;
+  double zero_momentum_avg_plaquette;
   double jpc_plus_zero;
   double jpc_minus_zero;
   double flux_re_zero;
@@ -133,17 +135,17 @@ int simulate(float beta){
     for (int j = 0; j < N_configs_per_sample; j++){
       update(lattice, V, beta);
 
-      this_avg_plaquette = avg_p(lattice);
-      jpc_plus_zero = m_plus(lattice, 0, this_avg_plaquette);
+      zero_momentum_avg_plaquette = avg_p_zerop(lattice);
+      jpc_plus_zero = m_plus(lattice, 0, zero_momentum_avg_plaquette);
       jpc_minus_zero = m_minus(lattice, 0);
 
       flux(lattice, 0, &flux_re_zero, &flux_im_zero);
 
-      avg_plaquette_data[i] += this_avg_plaquette / N_configs_per_sample;
+      avg_plaquette_data[i] += avg_p(lattice) / N_configs_per_sample;
 
       for (int t = 0; t < Lt; t++){
 
-        jpc_plus_data[op_sample + t] += jpc_plus_zero*m_plus(lattice, t, this_avg_plaquette) / N_configs_per_sample;
+        jpc_plus_data[op_sample + t] += jpc_plus_zero*m_plus(lattice, t, zero_momentum_avg_plaquette) / N_configs_per_sample;
         jpc_minus_data[op_sample + t] += jpc_minus_zero*m_minus(lattice, t) / N_configs_per_sample;
 
         // we need two numbers out of this, which is not ideal
