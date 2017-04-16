@@ -11,4 +11,4 @@ Here we declare update()
 
 #include "Site.h"
 
-int update(Site** lattice, double* gauss, double beta);
+int update(Site** lattice, double* gauss);

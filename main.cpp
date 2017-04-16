@@ -16,11 +16,7 @@ neighbours' addresses.
 
 int main(){
 
-  float beta [3] = {2.0, 2.2, 2.3};
-
-  for (int i = 0; i < 3; i++){
-    simulate(beta[i]);
-  }
+  simulate();
 
   return 0;
 }

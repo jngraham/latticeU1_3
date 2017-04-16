@@ -9,4 +9,4 @@ Here I declare the simulator as a separate function.
 /////////////////////////////////////////////////////////////////////////////
 */
 
-int simulate(float beta);
+int simulate();

@@ -30,7 +30,7 @@ with a different beta each time.
 #include "operators.h"
 #include "write.h"
 
-int simulate(float beta){
+int simulate(){
 
   clock_t t1 = clock();
 

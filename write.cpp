@@ -17,7 +17,7 @@ main to be very straightforward
 
 #include "globals.h"
 
-int write(double* avg_plaquette_data, double* jpc_plus_data, double* jpc_minus_data, double* flux_re_data, double* flux_im_data, double beta){
+int write(double* avg_plaquette_data, double* jpc_plus_data, double* jpc_minus_data, double* flux_re_data, double* flux_im_data){
 
   // Output data to .csv so I can use excel or mathematica or python or whatever
 
