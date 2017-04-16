@@ -65,7 +65,7 @@ int simulate(float beta){
 
   // declare the plaquette average
 
-  double this_avg_plaquette;
+  double zero_avg_plaquette;
   double jpc_plus_zero;
   double jpc_minus_zero;
   double flux_re_zero;
@@ -131,26 +131,31 @@ int simulate(float beta){
     op_sample = Lt*i;
 
     for (int j = 0; j < N_configs_per_sample; j++){
+
       update(lattice, V, beta);
 
-      this_avg_plaquette = avg_p(lattice);
-      jpc_plus_zero = m_plus(lattice, 0, this_avg_plaquette);
-      jpc_minus_zero = m_minus(lattice, 0);
+      zero_avg_plaquette = avg_p_xy(lattice);
 
-      flux(lattice, 0, &flux_re_zero, &flux_im_zero);
+      avg_plaquette_data[i] += avg_p(lattice) / N_configs_per_sample;
 
-      avg_plaquette_data[i] += this_avg_plaquette / N_configs_per_sample;
+      for (int T = 0; T < Lt; T++){
 
-      for (int t = 0; t < Lt; t++){
+        jpc_plus_zero = m_plus(lattice, T, zero_avg_plaquette);
+        jpc_minus_zero = m_minus(lattice, T);
 
-        jpc_plus_data[op_sample + t] += jpc_plus_zero*m_plus(lattice, t, this_avg_plaquette) / N_configs_per_sample;
-        jpc_minus_data[op_sample + t] += jpc_minus_zero*m_minus(lattice, t) / N_configs_per_sample;
+        flux(lattice, T, &flux_re_zero, &flux_im_zero);
 
-        // we need two numbers out of this, which is not ideal
-        flux(lattice, t, &flux_re, &flux_im);
+        for (int t = 0; t < Lt; t++){
 
-        flux_re_data[op_sample + t] += (flux_re_zero*flux_re + flux_im_zero*flux_im) / N_configs_per_sample;
-        flux_im_data[op_sample + t] += (flux_re_zero*flux_im - flux_im_zero*flux_re) / N_configs_per_sample;
+          jpc_plus_data[op_sample + t] += jpc_plus_zero*m_plus(lattice, t+T, zero_avg_plaquette);
+          jpc_minus_data[op_sample + t] += jpc_minus_zero*m_minus(lattice, t+T);
+
+          // we need two numbers out of this, which is not ideal
+          flux(lattice, t+T, &flux_re, &flux_im);
+
+          flux_re_data[op_sample + t] += (flux_re_zero*flux_re + flux_im_zero*flux_im);
+          flux_im_data[op_sample + t] += (flux_re_zero*flux_im - flux_im_zero*flux_re);
+        }
       }
     }
 
@@ -164,6 +169,15 @@ int simulate(float beta){
 
   for (int i = 0; i < N_sites; i++){
     delete lattice[i];
+  }
+
+// got to actually have averages
+
+  for (int j =0; j < Lt*N_samples; j++) {
+    jpc_plus_data[j] /= N_pts;
+    jpc_minus_data[j] /= N_pts;
+    flux_re_data[j] /= N_pts;
+    flux_im_data[j] /= N_pts;
   }
 
   write(avg_plaquette_data, jpc_plus_data, jpc_minus_data, flux_re_data, flux_im_data, beta);

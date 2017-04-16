@@ -196,8 +196,8 @@ for i = 1:3
         set(gca,'YTickLabelRotation',0)
         title(strcat('$$\beta=\,$$',' ',beta{1,j}),'Interpreter','latex','FontSize',16)
         xlabel('$$t$$','Interpreter','latex','FontSize',16)
-        ylabel('$$\textrm{Im}\left(\langle\Phi^\dagger(t)\Phi(0)\rangle\right)$$','Interpreter','latex','FontSize',16)
-
+        ylabel('$$|\langle\Phi^\dagger(t)\Phi(0)\rangle\|$$','Interpreter','latex','FontSize',16)
+        
     end
    
     

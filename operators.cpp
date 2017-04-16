@@ -39,10 +39,31 @@ double avg_p(Site** lattice){
   return p_sum / N_plaquettes;
 }
 
+double avg_p_xy(Site** lattice){
+
+  double p_sum = 0;
+  double p_xy = 0;
+
+  Site** ptr = lattice;
+
+  for (size_t i = 0; i < N_sites; i++){
+
+    p_xy = (*ptr)->xlink + (*ptr)->xnext->ylink - (*ptr)->ynext->xlink - (*ptr)->ylink;
+
+    p_sum += cos(p_xy);
+
+    ptr++;
+  }
+
+  return p_sum / N_sites;
+}
+
 double m_plus(Site** lattice, int t, double VEV){
 
   double jpc_plus_sum = 0;
   double p_xy = 0;
+
+  t %= Lt;
 
   size_t start = Lx*Ly*t;
   size_t end = Lx*Ly*(t+1);
@@ -65,6 +86,8 @@ double m_minus(Site** lattice, int t){
   double jpc_minus_sum = 0;
   double p_xy = 0;
 
+  t %= Lt;
+
   size_t start = Lx*Ly*t;
   size_t end = Lx*Ly*(t+1);
 
@@ -85,6 +108,8 @@ void flux(Site** lattice, int t, double* re_ptr, double* im_ptr){
   double phase_sum = 0;
   double re_sum = 0;
   double im_sum = 0;
+
+  t %= Lt;
 
   size_t start = Lx*Ly*t;
   size_t end = Lx*Ly*(t+1);
