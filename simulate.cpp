@@ -120,7 +120,7 @@ int simulate(){
   // relax the initial configuration
 
   for (int i = 0; i < N_equilibration_configs; i++){
-    update(lattice, V, beta);
+    update(lattice, V);
   }
   // do the simulation
 
@@ -132,7 +132,7 @@ int simulate(){
 
     for (int j = 0; j < N_configs_per_sample; j++){
 
-      update(lattice, V, beta);
+      update(lattice, V);
 
       zero_avg_plaquette = avg_p_xy(lattice);
 
@@ -180,7 +180,7 @@ int simulate(){
     flux_im_data[j] /= N_pts;
   }
 
-  write(avg_plaquette_data, jpc_plus_data, jpc_minus_data, flux_re_data, flux_im_data, beta);
+  write(avg_plaquette_data, jpc_plus_data, jpc_minus_data, flux_re_data, flux_im_data);
 
   clock_t t3 = clock();
 
