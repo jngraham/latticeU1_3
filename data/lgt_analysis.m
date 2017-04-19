@@ -89,7 +89,7 @@ for i = 1:3
         subplot(1,3,j)
         
         tstart = 2;
-        tcutoff = 5;
+        tcutoff = 6;
         
         for k = 1:N_s
             hold on;
@@ -126,7 +126,11 @@ for i = 1:3
         temp = csvread(f_mminus_name,1);
         mminus_data = temp(:,2:(end-1));
         
-        tcutoff = 11;
+        if i == 1
+            tcutoff = 11;
+        else
+            tcutoff = 15;
+        end
         
         figure(mminus)
         subplot(1,3,j)
@@ -274,9 +278,9 @@ for i = 1:3
             hold on;
             tsample = time(tstart:tcutoff)';
             t_fit_sample = ((tstart-1):0.1:(tcutoff-1))';
-            ysample = flux_abs_data(k,tstart:tcutoff)';
+            ysample = flux_abs_data(k,tstart:tcutoff)'-min(flux_abs_data(k,tstart:tcutoff))*ones(tcutoff-tstart+1,1);
             flux_abs_fit = fit(tsample,ysample,'exp1');
-            y = flux_abs_fit(t_fit_sample);
+            y = flux_abs_fit(t_fit_sample)+min(flux_abs_data(k,tstart:tcutoff))*ones(length(t_fit_sample),1);
             
             coeffs = coeffvalues(flux_abs_fit);
             cinterval = confint(flux_abs_fit,0.99);
@@ -284,8 +288,7 @@ for i = 1:3
             plot(t_fit_sample(1:end),y(1:end),'r')
             legend('off')
             xlim([0 T])
-        end
-        
+        end        
         
         set(gca,'YTickLabelRotation',0)
         title(strcat('$$\beta=\,$$',' ',beta{1,j}),'Interpreter','latex','FontSize',16)
